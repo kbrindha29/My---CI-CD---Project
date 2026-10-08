@@ -1,12 +1,947 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First CI/CD</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CloudForge | Cloud & DevOps</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1120;
+            color: white;
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            padding: 18px 8%;
+            background: #111827;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #263244;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #d1d5db;
+            font-size: 15px;
+        }
+
+        nav ul li a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 90vh;
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 1px solid #38bdf8;
+            border-radius: 20px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #aeb8c7;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #38bdf8;
+            color: #07111f;
+        }
+
+        .secondary {
+            border: 1px solid #475569;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #0ea5e9;
+        }
+
+        .secondary:hover {
+            border-color: #38bdf8;
+        }
+
+        /* TERMINAL */
+
+        .terminal {
+            width: 430px;
+            background: #111827;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .terminal-header {
+            padding: 12px 15px;
+            background: #1e293b;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #64748b;
+            margin-right: 5px;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            font-family: monospace;
+            color: #94a3b8;
+        }
+
+        .green {
+            color: #4ade80;
+        }
+
+        .blue {
+            color: #38bdf8;
+        }
+
+        /* COMMON */
+
+        section {
+            padding: 90px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #94a3b8;
+        }
+
+        /* SERVICES */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid #263244;
+            border-radius: 12px;
+            padding: 30px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #38bdf8;
+        }
+
+        .icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: #f8fafc;
+        }
+
+        .card p {
+            color: #94a3b8;
+        }
+
+        /* PIPELINE */
+
+        .pipeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-box {
+            background: #111827;
+            border: 1px solid #334155;
+            padding: 25px;
+            width: 170px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .pipeline-box h3 {
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .arrow {
+            font-size: 25px;
+            color: #38bdf8;
+        }
+
+        /* PROJECTS */
+
+        .project-card {
+            background: #111827;
+            border: 1px solid #263244;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .project-card h3 {
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+
+        .project-card p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tags span {
+            padding: 6px 12px;
+            border-radius: 15px;
+            background: #1e293b;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        /* ABOUT */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about h2 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat {
+            background: #111827;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid #263244;
+            border-radius: 10px;
+        }
+
+        .stat h3 {
+            font-size: 35px;
+            color: #38bdf8;
+        }
+
+        .stat p {
+            margin: 0;
+        }
+
+        /* CONTACT */
+
+        .contact-box {
+            max-width: 700px;
+            margin: auto;
+            background: #111827;
+            padding: 35px;
+            border-radius: 12px;
+            border: 1px solid #263244;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 13px;
+            background: #0b1120;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            outline: none;
+        }
+
+        .input-group textarea {
+            height: 130px;
+            resize: none;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #070d19;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .terminal {
+                width: 100%;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Hello CI/CD!</h1>
-    <p>This is my first CI/CD project.</p>
+    <!-- NAVBAR -->
+
+    <nav>
+        <div class="logo">
+            Cloud<span>Forge</span>
+        </div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#pipeline">CI/CD</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <span class="tag">Cloud • DevOps • Automation</span>
+
+            <h1>
+                Build. Deploy.
+                <span>Scale.</span>
+            </h1>
+
+            <p>
+                Modern cloud infrastructure and automated CI/CD pipelines
+                designed to help teams build, deploy and manage applications
+                faster and more reliably.
+            </p>
+
+            <div class="buttons">
+                <a href="#projects" class="btn primary">
+                    View Projects
+                </a>
+
+                <a href="#contact" class="btn secondary">
+                    Get Started
+                </a>
+            </div>
+
+        </div>
+
+
+        <!-- TERMINAL -->
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+
+            <div class="terminal-body">
+
+                <p>
+                    <span class="green">$</span>
+                    git push origin main
+                </p>
+
+                <br>
+
+                <p>
+                    <span class="blue">✓</span>
+                    Build completed successfully
+                </p>
+
+                <p>
+                    <span class="blue">✓</span>
+                    Tests passed
+                </p>
+
+                <p>
+                    <span class="blue">✓</span>
+                    Docker image created
+                </p>
+
+                <p>
+                    <span class="blue">✓</span>
+                    Deploying to AWS...
+                </p>
+
+                <br>
+
+                <p class="green">
+                    Deployment successful!
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICES -->
+
+    <section id="services">
+
+        <div class="section-title">
+
+            <h2>Cloud & DevOps Services</h2>
+
+            <p>
+                Tools and technologies for modern application delivery
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="icon">☁️</div>
+
+                <h3>AWS Cloud</h3>
+
+                <p>
+                    Deploy scalable and secure applications using
+                    EC2, S3, VPC, IAM, RDS and other AWS services.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🔄</div>
+
+                <h3>CI/CD Automation</h3>
+
+                <p>
+                    Automate build, test and deployment processes
+                    using GitHub Actions and Jenkins.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🐳</div>
+
+                <h3>Containerization</h3>
+
+                <p>
+                    Package applications into portable containers
+                    using Docker and manage workloads efficiently.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">⚙️</div>
+
+                <h3>Infrastructure as Code</h3>
+
+                <p>
+                    Provision cloud infrastructure automatically
+                    using Terraform and CloudFormation.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">☸️</div>
+
+                <h3>Kubernetes</h3>
+
+                <p>
+                    Deploy and manage containerized applications
+                    with Kubernetes orchestration.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">📊</div>
+
+                <h3>Monitoring</h3>
+
+                <p>
+                    Monitor application and infrastructure health
+                    using CloudWatch, Prometheus and Grafana.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CI/CD PIPELINE -->
+
+    <section id="pipeline">
+
+        <div class="section-title">
+
+            <h2>Our CI/CD Pipeline</h2>
+
+            <p>
+                From source code to production deployment
+            </p>
+
+        </div>
+
+
+        <div class="pipeline">
+
+            <div class="pipeline-box">
+                <h3>01</h3>
+                <p>Code</p>
+                <small>GitHub</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="pipeline-box">
+                <h3>02</h3>
+                <p>Build</p>
+                <small>GitHub Actions</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="pipeline-box">
+                <h3>03</h3>
+                <p>Test</p>
+                <small>Automated Tests</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="pipeline-box">
+                <h3>04</h3>
+                <p>Docker</p>
+                <small>Container</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="pipeline-box">
+                <h3>05</h3>
+                <p>Deploy</p>
+                <small>AWS EC2</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section id="projects">
+
+        <div class="section-title">
+
+            <h2>Featured Projects</h2>
+
+            <p>
+                Example cloud and DevOps projects
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="project-card">
+
+                <h3>Cloud Website Deployment</h3>
+
+                <p>
+                    A production-ready website deployed on AWS EC2
+                    with automated deployment using GitHub Actions.
+                </p>
+
+                <div class="tags">
+                    <span>AWS EC2</span>
+                    <span>Linux</span>
+                    <span>GitHub</span>
+                    <span>CI/CD</span>
+                </div>
+
+            </div>
+
+
+            <div class="project-card">
+
+                <h3>Docker Application</h3>
+
+                <p>
+                    Containerized web application with Docker and
+                    automated build and deployment pipeline.
+                </p>
+
+                <div class="tags">
+                    <span>Docker</span>
+                    <span>GitHub Actions</span>
+                    <span>AWS</span>
+                </div>
+
+            </div>
+
+
+            <div class="project-card">
+
+                <h3>Infrastructure Automation</h3>
+
+                <p>
+                    AWS infrastructure created and managed using
+                    Infrastructure as Code with Terraform.
+                </p>
+
+                <div class="tags">
+                    <span>Terraform</span>
+                    <span>AWS</span>
+                    <span>IaC</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+        <div class="about">
+
+            <div>
+
+                <h2>Why CloudForge?</h2>
+
+                <p>
+                    CloudForge focuses on automation, reliability
+                    and scalable cloud infrastructure.
+                </p>
+
+                <p>
+                    By combining cloud computing, DevOps practices
+                    and CI/CD automation, development teams can
+                    release software faster and more confidently.
+                </p>
+
+                <p>
+                    Our goal is simple: reduce manual work and
+                    make application deployment reliable.
+                </p>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h3>99%</h3>
+                    <p>Automation</p>
+                </div>
+
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Monitoring</p>
+                </div>
+
+                <div class="stat">
+                    <h3>5+</h3>
+                    <p>Cloud Tools</p>
+                </div>
+
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Scalable</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section id="contact">
+
+        <div class="section-title">
+
+            <h2>Get In Touch</h2>
+
+            <p>
+                Have a cloud or DevOps project? Let's connect.
+            </p>
+
+        </div>
+
+
+        <div class="contact-box">
+
+            <div class="input-group">
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your name"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Message</label>
+
+                <textarea
+                    id="message"
+                    placeholder="Enter your message"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                onclick="sendMessage()"
+            >
+                Send Message
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 CloudForge. Built with HTML, CSS & JavaScript.
+        </p>
+
+        <p>
+            Cloud • DevOps • CI/CD • Automation
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        function sendMessage() {
+
+            let name = document.getElementById("name").value;
+
+            let email = document.getElementById("email").value;
+
+            let message = document.getElementById("message").value;
+
+
+            if (name === "" || email === "" || message === "") {
+
+                alert("Please fill all the fields.");
+
+            } else {
+
+                alert(
+                    "Thank you " +
+                    name +
+                    "! Your message has been submitted."
+                );
+
+            }
+
+        }
+
+    </script>
 
 </body>
 </html>
