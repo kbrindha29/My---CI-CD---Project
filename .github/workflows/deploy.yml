@@ -13,8 +13,6 @@ id-token: write
 jobs:
 build-and-deploy:
 runs-on: ubuntu-latest
-
-```
 steps:
   - name: Download source code
     uses: actions/checkout@v4
@@ -29,4 +27,3 @@ steps:
 
   - name: Deploy website
     uses: actions/deploy-pages@v4
-```
