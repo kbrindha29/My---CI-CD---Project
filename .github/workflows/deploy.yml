@@ -27,4 +27,3 @@ steps:
 
   - name: Deploy website
     uses: actions/deploy-pages@v4
-```
