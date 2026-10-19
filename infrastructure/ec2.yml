@@ -1,0 +1,74 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Automated EC2 web server for CI/CD project
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    Description: EC2 instance type
+
+Resources:
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow public HTTP traffic
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  WebServerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  WebServerProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref WebServerRole
+
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Sub '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64}}'
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref WebServerProfile
+      SecurityGroupIds:
+        - !GetAtt WebServerSecurityGroup.GroupId
+      Tags:
+        - Key: Name
+          Value: github-actions-cicd-server
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          dnf install -y httpd
+          systemctl enable --now httpd
+          cat > /var/www/html/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><title>My CI/CD Project</title></head>
+          <body>
+          <h1>Welcome to my AWS CI/CD project!</h1>
+          <p>Created using CloudFormation and GitHub Actions.</p>
+          </body>
+          </html>
+          EOF
+
+Outputs:
+  WebsiteURL:
+    Description: Website URL
+    Value: !Sub 'http://${WebServer.PublicDnsName}'
+  InstanceId:
+    Description: Created EC2 instance ID
+    Value: !Ref WebServer
