@@ -1,15 +1,17 @@
+
 name: Website CI/CD
 
 'on':
-push:
-branches:
-- main
+  push:
+    branches:
+      - main
 
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout code
-uses: actions/checkout@v4
-  - name: Check website file
-    run: test -f index.html
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check website file
+        run: test -f index.html
