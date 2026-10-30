@@ -1,0 +1,37 @@
+name: Create EC2 with CloudFormation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  create-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Connect to AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::376775861131:role/GitHubActions-EC2-CICD
+          aws-region: ap-south-1
+
+      - name: Validate CloudFormation template
+        run: |
+          aws cloudformation validate-template \
+            --template-body file://infrastructure/ec2.yml
+
+      - name: Create or update EC2 stack
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/ec2.yml \
+            --stack-name github-actions-cicd-stack \
+            --capabilities CAPABILITY_IAM
