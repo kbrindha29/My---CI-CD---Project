@@ -40,4 +40,3 @@ jobs:
             --template-file infrastructure/ec2.yml \
             --stack-name github-actions-cicd-stack \
             --capabilities CAPABILITY_IAM
-```
