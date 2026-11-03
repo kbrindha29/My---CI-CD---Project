@@ -33,8 +33,7 @@ jobs:
         run: |
           aws cloudformation validate-template \
             --template-body file://infrastructure/ec2.yml
-
-      - name: Create or update EC2 stack
+       - name: Create or update EC2 stack
         run: |
           aws cloudformation deploy \
             --template-file infrastructure/ec2.yml \
